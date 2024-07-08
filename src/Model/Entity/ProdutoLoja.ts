@@ -9,13 +9,13 @@ export class ProdutoLoja {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => Produto, (produto) => produto.id)
+    @ManyToOne(() => Produto, (produto) => produto.id, {lazy: true})
     @JoinColumn({ name: 'id_produto' })
-    produto: Produto;
+    produto: Promise<Produto>;
 
-    @ManyToOne(() => Loja, (loja) => loja.id)
+    @ManyToOne(() => Loja, (loja) => loja.id, {lazy: true})
     @JoinColumn({ name: 'id_loja' })
-    loja: Loja;
+    loja: Promise<Loja>;
 
     @Type(() => Number)
     @Column({ type: 'numeric', precision: 13, scale: 3, nullable: true })
