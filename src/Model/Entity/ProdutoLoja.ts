@@ -9,11 +9,11 @@ export class ProdutoLoja {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => Produto, (produto) => produto.id, {lazy: true})
+    @ManyToOne(() => Produto, (produto) => produto.id, { lazy: true })
     @JoinColumn({ name: 'id_produto' })
     produto: Promise<Produto>;
 
-    @ManyToOne(() => Loja, (loja) => loja.id, {lazy: true})
+    @ManyToOne(() => Loja, (loja) => loja.id, { lazy: true })
     @JoinColumn({ name: 'id_loja' })
     loja: Promise<Loja>;
 
