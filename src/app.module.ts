@@ -8,11 +8,13 @@ import { ProdutoLoja } from './Model/Entity/ProdutoLoja';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ProdutoModule } from './Module/Produto.module';
 import { LojaModule } from './Module/Loja.module';
+import { ProdutoLojaModule } from './Module/ProdutoLoja.module';
 
 @Module({
   imports: [ 
     ProdutoModule,
     LojaModule,
+    ProdutoLojaModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],

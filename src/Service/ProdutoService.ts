@@ -38,7 +38,17 @@ export class ProdutoService {
 
 
     async excluirProduto(id: number): Promise<string> {
-        await this.produtoRepository.delete({ id });
+        const produtosLojaRelacionados = await this.produtoRepository.find({
+            where: {
+                id: id
+            }
+        });
+
+        await this.produtoRepository.remove(produtosLojaRelacionados);
+
+        await this.produtoRepository.delete(id);
+
         return `O Produto com o ID: ${id}, foi excluído com sucesso.`;
     }
+
 }

@@ -10,8 +10,8 @@ export class ProdutoDTO {
     descricao: string;
 
     @Type(() => Number)
-    @IsNumber({}, { message: "Erro! O custo deve ser um número." })
     @IsOptional()
+    @IsNumber({}, { message: "Erro! O custo deve ser um número." })
     custo?: number;
 
     @IsOptional()
