@@ -2,11 +2,13 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { LojaDTO } from "src/Model/DTO/LojaDTO";
 import { Loja } from "src/Model/Entity/Loja";
+import { ProdutoLoja } from "src/Model/Entity/ProdutoLoja";
 import { Repository } from "typeorm";
 
 @Injectable()
 export class LojaService {
-    constructor(@InjectRepository(Loja) private lojaRepository: Repository<Loja>
+    constructor(@InjectRepository(Loja) private lojaRepository: Repository<Loja>,
+        @InjectRepository(ProdutoLoja) private produtoLojaRepository: Repository<ProdutoLoja>
     ) { }
 
 
@@ -36,7 +38,16 @@ export class LojaService {
 
 
     async excluirLoja(id: number): Promise<string> {
-        await this.lojaRepository.delete({ id });
-        return `A Loja com o ID: ${id}, foi excluída com sucesso.`;
+        const produtoLojaDependencias = await this.produtoLojaRepository.find({
+            where: {
+                id: id
+            }
+        });
+
+        await this.produtoLojaRepository.remove(produtoLojaDependencias);
+
+        await this.lojaRepository.delete(id)
+
+        return `A Loja com o ID: ${id}, foi excluída com sucesso, incluindo as suas Dependências na Tabela Produto Loja.`;
     }
 }

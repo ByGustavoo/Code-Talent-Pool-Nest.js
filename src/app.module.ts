@@ -30,8 +30,8 @@ import { ProdutoLojaModule } from './Module/ProdutoLoja.module';
       })
   }),
 ],
-  controllers: [AppController],
-  providers: [AppService, ConfigService],
+  controllers: [],
+  providers: [ConfigService],
 })
 export class AppModule {}
 
