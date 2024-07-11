@@ -38,6 +38,12 @@ export class LojaService {
 
 
     async excluirLoja(id: number): Promise<string> {
+        const procurarLoja = await this.lojaRepository.findOne({ where: { id } });
+
+        if (!procurarLoja) {
+            throw new NotFoundException(`Erro! A Loja com o ID: ${id}, não foi encontrada.`);
+        }
+
         const produtoLojaDependencias = await this.produtoLojaRepository.find({
             where: {
                 id: id
@@ -48,6 +54,7 @@ export class LojaService {
 
         await this.lojaRepository.delete(id)
 
-        return `A Loja com o ID: ${id}, foi excluída com sucesso, incluindo as suas Dependências na Tabela Produto Loja.`;
+        return `A Loja com o ID: ${id} foi excluída com sucesso, incluindo as suas dependências, caso existam, na tabela ProdutoLoja.`;
+
     }
 }

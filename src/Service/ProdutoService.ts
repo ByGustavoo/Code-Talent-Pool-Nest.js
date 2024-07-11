@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ProdutoDTO } from "src/Model/DTO/ProdutoDTO";
 import { Produto } from "src/Model/Entity/Produto";
@@ -27,9 +27,6 @@ export class ProdutoService {
 
         if (!procurarProduto) {
             throw new NotFoundException(`Erro! O Produto com o ID: ${id}, não foi encontrado.`);
-            /*throw new HttpException(`mensagem`, HttpStatus.BAD_REQUEST, {
-                cause: new Error('')
-            })*/
         }
 
         const { descricao, custo, imagem } = produto;
@@ -43,6 +40,12 @@ export class ProdutoService {
 
 
     async excluirProduto(id: number): Promise<string> {
+        const procurarProduto = await this.produtoRepository.findOne({ where: { id } });
+
+        if (!procurarProduto) {
+            throw new NotFoundException(`Erro! O Produto com o ID: ${id}, não foi encontrado.`);
+        }
+
         const produtoLojaDependencias = await this.produtoLojaRepository.find({
             where: {
                 id: id
@@ -53,6 +56,6 @@ export class ProdutoService {
 
         await this.produtoRepository.delete(id);
 
-        return `O Produto com o ID: ${id}, foi excluído com sucesso, incluindo as suas Dependências na Tabela Produto Loja.`;
+        return `O Produto com o ID: ${id} foi excluído com sucesso, incluindo as suas dependências, caso existam, na tabela ProdutoLoja.`;
     }
 }

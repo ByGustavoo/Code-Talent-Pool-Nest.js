@@ -9,7 +9,7 @@ import { LojaModule } from './Module/Loja.module';
 import { ProdutoLojaModule } from './Module/ProdutoLoja.module';
 
 @Module({
-  imports: [ 
+  imports: [
     ProdutoModule,
     LojaModule,
     ProdutoLojaModule,
@@ -26,10 +26,10 @@ import { ProdutoLojaModule } from './Module/ProdutoLoja.module';
         entities: [Loja, Produto, ProdutoLoja],
         synchronize: true,
       })
-  }),
-],
+    }),
+  ],
   controllers: [],
   providers: [ConfigService],
 })
-export class AppModule {}
+export class AppModule { }
 

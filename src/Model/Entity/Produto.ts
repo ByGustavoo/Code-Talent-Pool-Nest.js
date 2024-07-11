@@ -19,7 +19,7 @@ export class Produto {
     @Column({ name: 'custo', type: 'numeric', precision: 13, scale: 3, nullable: true })
     custo: number;
 
-    @IsOptional() 
+    @IsOptional()
     @Column({ name: 'imagem', type: 'bytea', nullable: true })
     imagem: Buffer;
 }

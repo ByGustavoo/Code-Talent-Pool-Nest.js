@@ -1,10 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, Column } from 'typeorm';
-import { Produto } from './Produto';
-import { Loja } from './Loja';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { Type } from 'class-transformer';
 import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
-import { ProdutoDTO } from '../DTO/ProdutoDTO';
-import { LojaDTO } from '../DTO/LojaDTO';
 
 @Entity('produtoloja')
 export class ProdutoLoja {

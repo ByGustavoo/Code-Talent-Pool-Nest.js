@@ -10,7 +10,7 @@ export class ProdutoLojaService {
     constructor(@InjectRepository(ProdutoLoja) private produtoLojaRepository: Repository<ProdutoLoja>
     ) { }
 
-    
+
     async findAll(): Promise<ProdutoLojaDTO[]> {
         return await this.produtoLojaRepository.find();
     }
@@ -39,6 +39,12 @@ export class ProdutoLojaService {
 
 
     async excluirProdutoLoja(id: number): Promise<string> {
+        const procurarProdutoLoja = await this.produtoLojaRepository.findOne({ where: { id } });
+
+        if (!procurarProdutoLoja) {
+            throw new NotFoundException(`Erro! O Produto Loja com o ID: ${id}, não foi encontrado.`);
+        }
+
         await this.produtoLojaRepository.delete({ id });
         return `O Produto Loja com o ID: ${id}, foi excluído com sucesso.`;
     }

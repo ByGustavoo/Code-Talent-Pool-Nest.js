@@ -1,6 +1,4 @@
 import { Type } from "class-transformer";
-import { ProdutoDTO } from "../DTO/ProdutoDTO";
-import { LojaDTO } from "../DTO/LojaDTO";
 import { IsNotEmpty, IsNumber, IsOptional } from "class-validator";
 
 export class ProdutoLojaDTO {

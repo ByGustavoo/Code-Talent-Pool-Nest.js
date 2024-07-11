@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsNotEmpty, IsNumber, IsOptional, Length, MaxLength } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, MaxLength } from "class-validator";
 
 export class ProdutoDTO {
 
