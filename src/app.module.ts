@@ -18,18 +18,17 @@ import { ProdutoLojaModule } from './Module/ProdutoLoja.module';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        host: configService.getOrThrow('POSTGRES_HOST'),
-        port: configService.getOrThrow('POSTGRES_PORT'),
-        username: configService.getOrThrow('POSTGRES_USERNAME'),
-        password: configService.getOrThrow('POSTGRES_PASSWORD'),
-        database: configService.getOrThrow('POSTGRES_DATABASE'),
+        host: configService.getOrThrow('DATABASE_HOST'),
+        port: configService.getOrThrow('DATABASE_PORT'),
+        username: configService.getOrThrow('DATABASE_USERNAME'),
+        password: configService.getOrThrow('DATABASE_PASSWORD'),
+        database: configService.getOrThrow('DATABASE_NAME'),
         entities: [Loja, Produto, ProdutoLoja],
         synchronize: true,
-      })
+      }),
     }),
   ],
   controllers: [],
   providers: [ConfigService],
 })
-export class AppModule { }
-
+export class AppModule {}
