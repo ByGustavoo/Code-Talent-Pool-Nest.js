@@ -6,8 +6,13 @@ import { LojaService } from "src/Service/LojaService";
 export class LojaController {
     constructor(private readonly lojaService: LojaService) { }
 
+    @Get(':id')
+    findOne(@Param('id') id: number): Promise<LojaDTO> {
+        return this.lojaService.findOne(id);
+    }
+
     @Get()
-    getLojas(): Promise<LojaDTO[]> {
+    findAll(): Promise<LojaDTO[]> {
         return this.lojaService.findAll();
     }
 

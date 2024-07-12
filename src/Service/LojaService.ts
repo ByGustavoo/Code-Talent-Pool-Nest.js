@@ -12,6 +12,17 @@ export class LojaService {
     ) { }
 
 
+    async findOne(id: number): Promise<LojaDTO> {
+        const procurarLoja = await this.lojaRepository.findOne({ where: { id } });
+
+        if (!procurarLoja) {
+            throw new NotFoundException(`Erro! A Loja com o ID: ${id}, não foi encontrada.`);
+        }
+
+        return await this.lojaRepository.findOne({ where: { id } });
+    }
+
+
     async findAll(): Promise<LojaDTO[]> {
         return await this.lojaRepository.find();
     }

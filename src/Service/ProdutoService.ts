@@ -12,6 +12,17 @@ export class ProdutoService {
     ) { }
 
 
+    async findOne(id: number): Promise<ProdutoDTO> {
+        const procurarProduto = await this.produtoRepository.findOne({ where: { id } });
+
+        if (!procurarProduto) {
+            throw new NotFoundException(`Erro! O Produto com o ID: ${id}, não foi encontrado.`);
+        }
+
+        return await this.produtoRepository.findOne({ where: { id } });
+    }
+
+
     async findAll(): Promise<ProdutoDTO[]> {
         return await this.produtoRepository.find();
     }

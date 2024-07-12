@@ -6,8 +6,13 @@ import { ProdutoLojaService } from "src/Service/ProdutoLojaService";
 export class ProdutoLojaController {
     constructor(private readonly produtoLojaService: ProdutoLojaService) { }
 
+    @Get(':id')
+    findOne(@Param('id') id: number): Promise<ProdutoLojaDTO> {
+        return this.produtoLojaService.findOne(id);
+    }
+
     @Get()
-    getProdutoLoja(): Promise<ProdutoLojaDTO[]> {
+    findAll(): Promise<ProdutoLojaDTO[]> {
         return this.produtoLojaService.findAll();
     }
 
