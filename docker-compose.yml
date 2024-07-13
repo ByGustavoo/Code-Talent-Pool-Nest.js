@@ -5,8 +5,22 @@ services:
     image: postgres:latest
     container_name: code-talent-pool-api
     ports:
-      - "5432:5432"
+      - '5432:5432'
     environment:
-      DATABASE_NAME: vrteste
-      DATABASE_USER: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: vrteste
+
+  nestjs-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nestjs-app
+    ports:
+      - '3000:3000'
+    environment:
+      DATABASE_HOST: postgres  
+      DATABASE_PORT: 5432
+      DATABASE_USERNAME: postgres
       DATABASE_PASSWORD: postgres
+      DATABASE_NAME: vrteste

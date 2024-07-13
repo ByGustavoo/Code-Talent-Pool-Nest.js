@@ -25,7 +25,7 @@ import { ProdutoLoja } from './Model/Entity/ProdutoLoja';
         database: configService.getOrThrow('DATABASE_NAME'),
         entities: [Loja, Produto, ProdutoLoja],
         migrations: [__dirname + '/Migrations/*.ts'],
-        synchronize: false,
+        synchronize: true,
       }),
     }),
   ],
