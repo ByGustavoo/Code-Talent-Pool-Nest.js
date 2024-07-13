@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Loja } from './Model/Entity/Loja';
-import { Produto } from './Model/Entity/Produto';
-import { ProdutoLoja } from './Model/Entity/ProdutoLoja';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ProdutoModule } from './Module/Produto.module';
 import { LojaModule } from './Module/Loja.module';
 import { ProdutoLojaModule } from './Module/ProdutoLoja.module';
+import { Loja } from './Model/Entity/Loja';
+import { Produto } from './Model/Entity/Produto';
+import { ProdutoLoja } from './Model/Entity/ProdutoLoja';
 
 @Module({
   imports: [
@@ -24,7 +24,8 @@ import { ProdutoLojaModule } from './Module/ProdutoLoja.module';
         password: configService.getOrThrow('DATABASE_PASSWORD'),
         database: configService.getOrThrow('DATABASE_NAME'),
         entities: [Loja, Produto, ProdutoLoja],
-        synchronize: true,
+        migrations: [__dirname + '/Migrations/*.ts'],
+        synchronize: false,
       }),
     }),
   ],
