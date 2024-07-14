@@ -42,3 +42,22 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+
+## 🚀 Ferramentas Utilizadas:
+
+* Visual Studio Code
+
+* Nest.js
+
+* DBeaver
+
+* PostgreSQL
+
+* Postman
+  
+
+## 📝 Feito por:
+
+### Gustavo Correa
+
+### Linkedin: https://www.linkedin.com/in/gustavo-chauar-correa-946168269/
