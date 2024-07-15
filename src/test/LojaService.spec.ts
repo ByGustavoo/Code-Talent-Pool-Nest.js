@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { LojaService } from '../Service/LojaService';
-import { Loja } from '../Model/Entity/Loja';
-import { ProdutoLoja } from '../Model/Entity/ProdutoLoja';
+import { Loja } from '../model/entities/Loja';
+import { ProdutoLoja } from '../model/entities/ProdutoLoja';
 import { Repository } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
 

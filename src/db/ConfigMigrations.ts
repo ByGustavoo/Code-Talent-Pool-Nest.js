@@ -1,8 +1,8 @@
 import { ConfigService } from '@nestjs/config';
 import { config } from 'dotenv';
-import { Loja } from 'src/Model/Entity/Loja';
-import { Produto } from 'src/Model/Entity/Produto';
-import { ProdutoLoja } from 'src/Model/Entity/ProdutoLoja';
+import { Loja } from 'src/model/entities/Loja';
+import { Produto } from 'src/model/entities/Produto';
+import { ProdutoLoja } from 'src/model/entities/ProdutoLoja';
 import { DataSource, DataSourceOptions } from 'typeorm';
 
 config(); 

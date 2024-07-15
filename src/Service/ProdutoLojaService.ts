@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ProdutoLojaDTO } from 'src/Model/DTO/ProdutoLojaDTO';
-import { ProdutoLoja } from 'src/Model/Entity/ProdutoLoja';
+import { ProdutoLojaDTO } from 'src/model/dto/ProdutoLojaDTO';
+import { ProdutoLoja } from 'src/model/entities/ProdutoLoja';
 import { Repository } from 'typeorm';
 
 @Injectable()

@@ -4,9 +4,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ProdutoModule } from './Module/Produto.module';
 import { LojaModule } from './Module/Loja.module';
 import { ProdutoLojaModule } from './Module/ProdutoLoja.module';
-import { Loja } from './Model/Entity/Loja';
-import { Produto } from './Model/Entity/Produto';
-import { ProdutoLoja } from './Model/Entity/ProdutoLoja';
+import { Loja } from './model/entities/Loja';
+import { Produto } from './model/entities/Produto';
+import { ProdutoLoja } from './model/entities/ProdutoLoja';
 
 @Module({
   imports: [

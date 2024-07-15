@@ -9,7 +9,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { ProdutoLojaDTO } from 'src/Model/DTO/ProdutoLojaDTO';
+import { ProdutoLojaDTO } from 'src/model/dto/ProdutoLojaDTO';
 import { ProdutoLojaService } from 'src/Service/ProdutoLojaService';
 
 @Controller('produtoloja')
