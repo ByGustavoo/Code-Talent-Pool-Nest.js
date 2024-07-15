@@ -39,6 +39,7 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+<br>
 
 ## 🚀 Ferramentas Utilizadas:
 
@@ -52,9 +53,8 @@ $ npm run test:cov
 
 * Postman
   
+<br>
 
-## 📝 Feito por:
+## 🖥️ Desenvolvido por:
 
-### Gustavo Correa
-
-### Linkedin: https://www.linkedin.com/in/gustavo-chauar-correa-946168269/
+### 📝 Linkedin: [Gustavo Correa](https://www.linkedin.com/in/gustavo-chauar-correa-946168269/)
