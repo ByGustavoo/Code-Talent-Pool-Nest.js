@@ -1,14 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { LojaDTO } from 'src/model/dto/LojaDTO';
 import { LojaService } from 'src/Service/LojaService';
 
@@ -28,18 +18,18 @@ export class LojaController {
 
   @Post()
   @UsePipes(new ValidationPipe({ transform: true }))
-  criarLoja(@Body() loja: LojaDTO): Promise<LojaDTO> {
-    return this.lojaService.criarLoja(loja);
+  createStore(@Body() loja: LojaDTO): Promise<LojaDTO> {
+    return this.lojaService.createStore(loja);
   }
 
   @Patch(':id')
   @UsePipes(new ValidationPipe({ transform: true }))
-  atualizarLoja(@Param('id') id: number, @Body() loja: LojaDTO) {
-    return this.lojaService.atualizarLoja(id, loja);
+  updateStore(@Param('id') id: number, @Body() loja: LojaDTO) {
+    return this.lojaService.updateStore(id, loja);
   }
 
   @Delete(':id')
-  excluirLoja(@Param('id') id: number) {
-    return this.lojaService.excluirLoja(id);
+  deleteStore(@Param('id') id: number) {
+    return this.lojaService.deleteStore(id);
   }
 }

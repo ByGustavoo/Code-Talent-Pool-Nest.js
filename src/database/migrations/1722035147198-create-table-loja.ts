@@ -1,12 +1,12 @@
-/*import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class  $npmConfigName1720828331112 implements MigrationInterface {
+export class CreateTableLoja1722035147198 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
-           create table loja (
-	       id serial NOT NULL PRIMARY KEY,
-	       descricao varchar(60) NOT NULL
+           CREATE TABLE loja (
+	       id SERIAL NOT NULL PRIMARY KEY,
+	       descricao VARCHAR(60) NOT NULL
             );
         `);
     }
@@ -14,4 +14,5 @@ export class  $npmConfigName1720828331112 implements MigrationInterface {
     public async down(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`DROP TABLE IF EXISTS loja;`);
     }
-}*/
+
+}

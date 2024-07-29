@@ -1,14 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ProdutoLojaDTO } from 'src/model/dto/ProdutoLojaDTO';
 import { ProdutoLojaService } from 'src/Service/ProdutoLojaService';
 
@@ -28,21 +18,18 @@ export class ProdutoLojaController {
 
   @Post()
   @UsePipes(new ValidationPipe({ transform: true }))
-  criarProdutoLoja(@Body() produto: ProdutoLojaDTO): Promise<ProdutoLojaDTO> {
-    return this.produtoLojaService.criarProdutoLoja(produto);
+  createProductStore(@Body() produto: ProdutoLojaDTO): Promise<ProdutoLojaDTO> {
+    return this.produtoLojaService.createProductStore(produto);
   }
 
   @Patch(':id')
   @UsePipes(new ValidationPipe({ transform: true }))
-  atualizarProdutoLoja(
-    @Param('id') id: number,
-    @Body() produto: ProdutoLojaDTO,
-  ) {
-    return this.produtoLojaService.atualizarProdutoLoja(id, produto);
+  updateProductStore(@Param('id') id: number, @Body() produto: ProdutoLojaDTO) {
+    return this.produtoLojaService.updateProductStore(id, produto);
   }
 
   @Delete(':id')
-  excluirProdutoLoja(@Param('id') id: number) {
-    return this.produtoLojaService.excluirProdutoLoja(id);
+  deleteProductStore(@Param('id') id: number) {
+    return this.produtoLojaService.deleteProductStore(id);
   }
 }

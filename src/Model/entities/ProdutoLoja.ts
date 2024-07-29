@@ -20,6 +20,6 @@ export class ProdutoLoja {
 
   @Type(() => Number)
   @IsOptional()
-  @Column({name: 'precovenda', type: 'numeric', precision: 13, scale: 3, nullable: true})
-  precoVenda: number;
+  @Column({name: 'precovenda', type: 'numeric', precision: 13, scale: 2, nullable: true})
+  precoVenda?: number;
 }

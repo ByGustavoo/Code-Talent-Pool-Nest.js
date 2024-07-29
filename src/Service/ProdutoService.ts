@@ -1,5 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ExceptionsMessages } from 'src/messages/exceptions/ExceptionsMessages';
+import { SucessMessages } from 'src/messages/success/SuccessMessages';
 import { ProdutoDTO } from 'src/model/dto/ProdutoDTO';
 import { Produto } from 'src/model/entities/Produto';
 import { ProdutoLoja } from 'src/model/entities/ProdutoLoja';
@@ -9,73 +11,83 @@ import { Repository } from 'typeorm';
 export class ProdutoService {
   constructor(
     @InjectRepository(Produto) private produtoRepository: Repository<Produto>,
-    @InjectRepository(ProdutoLoja)
-    private produtoLojaRepository: Repository<ProdutoLoja>,
+    @InjectRepository(ProdutoLoja) private produtoLojaRepository: Repository<ProdutoLoja>,
   ) {}
 
-  async findOne(id: number): Promise<ProdutoDTO> {
-    const procurarProduto = await this.produtoRepository.findOne({
-      where: { id },
-    });
 
-    if (!procurarProduto) {
-      throw new NotFoundException(
-        `Erro! O Produto com o ID: ${id}, não foi encontrado.`,
-      );
+  // Busca um Produto pelo ID
+  async findOne(id: number): Promise<ProdutoDTO> {
+    const findProduct = await this.produtoRepository.findOne({ where: { id } });
+
+    if (!findProduct) {
+      throw ExceptionsMessages.PRODUCT_NOT_FOUND(id);
     }
 
     return await this.produtoRepository.findOne({ where: { id } });
   }
 
+
+  // Busca todos os Produtos
   async findAll(): Promise<ProdutoDTO[]> {
     return await this.produtoRepository.find();
   }
 
-  async criarProduto(produto: ProdutoDTO): Promise<ProdutoDTO> {
-    return await this.produtoRepository.save(produto);
+
+  // Cria um Produto
+  async createProduct(produto: ProdutoDTO): Promise<ProdutoDTO> {
+    const productSaved = this.produtoRepository.save(produto);
+
+    if (productSaved) {
+      throw SucessMessages.PRODUCT_CREATED_SUCCESS(produto.descricao);
+    }
+
+    return productSaved;
   }
 
-  async atualizarProduto(id: number, produto: ProdutoDTO): Promise<void> {
-    const procurarProduto = await this.produtoRepository.findOne({
-      where: { id },
-    });
 
-    if (!procurarProduto) {
-      throw new NotFoundException(
-        `Erro! O Produto com o ID: ${id}, não foi encontrado.`,
-      );
+  // Atualiza um Produto
+  async updateProduct(id: number, produto: ProdutoDTO) {
+    const findProduct = await this.produtoRepository.findOne({ where: { id } });
+
+    if (!findProduct) {
+      throw ExceptionsMessages.PRODUCT_NOT_FOUND(id);
     }
 
     const { descricao, custo, imagem } = produto;
+    findProduct.descricao = descricao;
+    findProduct.custo = custo;
+    findProduct.imagem = imagem;
 
-    procurarProduto.descricao = descricao;
-    procurarProduto.custo = custo;
-    procurarProduto.imagem = imagem;
+    await this.produtoRepository.save(findProduct);
 
-    await this.produtoRepository.save(procurarProduto);
+    const successMessages = SucessMessages.PRODUCT_UPDATED_SUCCESS(descricao);
+
+    return {
+      status: successMessages.getStatus(),
+      message: successMessages.message
+    };
   }
 
-  async excluirProduto(id: number): Promise<string> {
-    const procurarProduto = await this.produtoRepository.findOne({
-      where: { id },
-    });
 
-    if (!procurarProduto) {
-      throw new NotFoundException(
-        `Erro! O Produto com o ID: ${id}, não foi encontrado.`,
-      );
+  // Deleta um Produto
+  async deleteProduct(id: number) {
+    const findProduct = await this.produtoRepository.findOne({ where: { id } });
+
+    if (!findProduct) {
+      throw ExceptionsMessages.PRODUCT_NOT_FOUND(id);
     }
 
-    const produtoLojaDependencias = await this.produtoLojaRepository.find({
-      where: {
-        id: id,
-      },
-    });
+    const productStoreDependencies = await this.produtoLojaRepository.find({ where: { id: id }});
 
-    await this.produtoLojaRepository.remove(produtoLojaDependencias);
+    await this.produtoLojaRepository.remove(productStoreDependencies);
 
     await this.produtoRepository.delete(id);
 
-    return `O Produto com o ID: ${id} foi excluído com sucesso, incluindo as suas dependências, caso existam, na tabela ProdutoLoja.`;
+    const successMessages = SucessMessages.PRODUCT_DELETED_SUCCESS(id);
+
+    return {
+      status: successMessages.getStatus(),
+      message: successMessages.message
+    };
   }
 }

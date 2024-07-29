@@ -16,10 +16,10 @@ export class Produto {
   @Type(() => Number)
   @IsOptional()
   @IsNumber({}, { message: 'Erro! O custo deve ser um número.' })
-  @Column({name: 'custo', type: 'numeric', precision: 13, scale: 3, nullable: true})
-  custo: number;
+  @Column({name: 'custo', type: 'numeric', precision: 13, scale: 2, nullable: true})
+  custo?: number;
 
   @IsOptional()
   @Column({ name: 'imagem', type: 'bytea', nullable: true })
-  imagem: Buffer;
+  imagem?: Buffer;
 }

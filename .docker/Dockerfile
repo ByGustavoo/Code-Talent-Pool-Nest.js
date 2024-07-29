@@ -1,15 +1,17 @@
-FROM node:latest
+FROM node:20.11.0
 
 WORKDIR /app
 
+COPY package*.json ./
+
 COPY . .
-COPY ./.env ./
 
-RUN npm install 
-
-RUN npm run build
+RUN npm install
 
 EXPOSE 3000
 
-CMD [ "npm", "run", "start:dev" ]
+# Tornando o script de entrada executável
+RUN chmod +x .docker/entrypoint.sh
 
+# Definindo o Script de entrada como o ponto de entrada
+ENTRYPOINT [ "sh", "/app/.docker/entrypoint.sh" ]
