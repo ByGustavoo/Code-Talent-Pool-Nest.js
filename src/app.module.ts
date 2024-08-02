@@ -1,17 +1,17 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { ProdutoModule } from './Module/Produto.module';
-import { LojaModule } from './Module/Loja.module';
-import { ProdutoLojaModule } from './Module/ProdutoLoja.module';
+import { ProdutoModule } from './module/Produto.module';
+import { LojaModule } from './module/Loja.module';
+import { ProdutoLojaModule } from './module/ProdutoLoja.module';
 import { Loja } from './model/entities/Loja';
 import { Produto } from './model/entities/Produto';
 import { ProdutoLoja } from './model/entities/ProdutoLoja';
 
 @Module({
   imports: [
-    ProdutoModule,
     LojaModule,
+    ProdutoModule,
     ProdutoLojaModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
@@ -24,7 +24,7 @@ import { ProdutoLoja } from './model/entities/ProdutoLoja';
         password: configService.getOrThrow('DATABASE_PASSWORD'),
         database: configService.getOrThrow('DATABASE_NAME'),
         entities: [Loja, Produto, ProdutoLoja],
-        migrations: [__dirname + '/Migrations/*.ts'],
+        migrations: [__dirname + '/migrations/*.ts'],
         synchronize: true,
       }),
     }),

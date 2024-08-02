@@ -16,7 +16,7 @@ const dataSourceOptions: DataSourceOptions = {
     username: configService.getOrThrow('DATABASE_USERNAME'),
     password: configService.getOrThrow('DATABASE_PASSWORD'),
     database: configService.getOrThrow('DATABASE_NAME'),
-    entities: [Loja, Produto, ProdutoLoja],
+    entities: [__dirname + 'src/model/entities/*.ts'],
     migrations: [__dirname + '/migrations/*.ts'],
     synchronize: true,
 }
