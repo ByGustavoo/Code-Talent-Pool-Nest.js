@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ExceptionsMessages } from 'src/messages/exceptions/ExceptionsMessages';
-import { SucessMessages } from 'src/messages/success/SuccessMessages';
+import { Messages } from 'src/messages/messages';
 import { ProdutoLojaDTO } from 'src/model/dto/ProdutoLojaDTO';
 import { Loja } from 'src/model/entities/Loja';
 import { Produto } from 'src/model/entities/Produto';
@@ -13,7 +12,8 @@ export class ProdutoLojaService {
   constructor(
     @InjectRepository(ProdutoLoja) private produtoLojaRepository: Repository<ProdutoLoja>,
     @InjectRepository(Produto) private produtoRepository: Repository<Produto>,
-    @InjectRepository(Loja) private lojaRepository: Repository<Loja>
+    @InjectRepository(Loja) private lojaRepository: Repository<Loja>,
+    private readonly MESSAGES: Messages
   ) {}
 
 
@@ -22,7 +22,7 @@ export class ProdutoLojaService {
     const findProductStore = await this.produtoLojaRepository.findOne({ where: { id } });
 
     if (!findProductStore) {
-      throw ExceptionsMessages.PRODUCT_STORE_NOT_FOUND(id);
+      throw this.MESSAGES.PRODUCT_STORE_NOT_FOUND(id);
     }
 
     return await this.produtoLojaRepository.findOne({ where: { id } });
@@ -43,15 +43,15 @@ export class ProdutoLojaService {
     const findStore = await this.lojaRepository.findOne({where: { id: produtoLoja.loja }})
 
     if (!findProduct) {
-      throw ExceptionsMessages.PRODUCT_NOT_FOUND(produtoLoja.produto);
+      throw this.MESSAGES.PRODUCT_NOT_FOUND(produtoLoja.produto);
     }
 
     else if (!findStore) {
-      throw ExceptionsMessages.STORE_NOT_FOUND(produtoLoja.loja);
+      throw this.MESSAGES.STORE_NOT_FOUND(produtoLoja.loja);
     }
 
     else {
-      throw SucessMessages.PRODUCT_STORE_CREATED_SUCCESS(produtoLoja.id);
+      throw this.MESSAGES.PRODUCT_STORE_CREATED_SUCCESS(produtoLoja.id);
     } 
   }
 
@@ -61,7 +61,7 @@ export class ProdutoLojaService {
     const findProductStore = await this.produtoLojaRepository.findOne({ where: { id } });
 
     if (!findProductStore) {
-      throw ExceptionsMessages.PRODUCT_STORE_NOT_FOUND(id);
+      throw this.MESSAGES.PRODUCT_STORE_NOT_FOUND(id);
     }
 
     const { loja, produto, precoVenda } = produtoLoja;
@@ -71,11 +71,11 @@ export class ProdutoLojaService {
 
     await this.produtoLojaRepository.save(findProductStore);
 
-    const successMessages = SucessMessages.PRODUCT_STORE_UPDATED_SUCCESS(findProductStore.id);
+    const MESSAGES = this.MESSAGES.PRODUCT_STORE_UPDATED_SUCCESS(findProductStore.id);
 
     return {
-      status: successMessages.getStatus(),
-      message: successMessages.message
+      status: MESSAGES.getStatus(),
+      message: MESSAGES.message
     };
   }
 
@@ -85,16 +85,16 @@ export class ProdutoLojaService {
     const findProductStore = await this.produtoLojaRepository.findOne({ where: { id } });
 
     if (!findProductStore) {
-      throw ExceptionsMessages.PRODUCT_STORE_NOT_FOUND(id);
+      throw this.MESSAGES.PRODUCT_STORE_NOT_FOUND(id);
     }
 
     await this.produtoLojaRepository.delete({ id });
 
-    const successMessages = SucessMessages.PRODUCT_STORE_DELETED_SUCCESS(findProductStore.id);
+    const MESSAGES = this.MESSAGES.PRODUCT_STORE_DELETED_SUCCESS(findProductStore.id);
 
     return {
-      status: successMessages.getStatus(),
-      message: successMessages.message
+      status: MESSAGES.getStatus(),
+      message: MESSAGES.message
     };
   }
 }

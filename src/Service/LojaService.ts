@@ -4,14 +4,14 @@ import { LojaDTO } from 'src/model/dto/LojaDTO';
 import { Loja } from '../model/entities/Loja';
 import { ProdutoLoja } from '../model/entities/ProdutoLoja';
 import { Repository } from 'typeorm';
-import { ExceptionsMessages } from 'src/messages/exceptions/ExceptionsMessages';
-import { SucessMessages } from 'src/messages/success/SuccessMessages';
+import { Messages } from 'src/messages/messages';
 
 @Injectable()
 export class LojaService {
   constructor(
     @InjectRepository(Loja) private lojaRepository: Repository<Loja>,
     @InjectRepository(ProdutoLoja) private produtoLojaRepository: Repository<ProdutoLoja>,
+    private readonly MESSAGES: Messages,
   ) {}
 
 
@@ -20,7 +20,7 @@ export class LojaService {
     const findStore = await this.lojaRepository.findOne({ where: { id } });
 
     if (!findStore) {
-      throw ExceptionsMessages.STORE_NOT_FOUND(id);
+      throw this.MESSAGES.STORE_NOT_FOUND(id);
     }
 
     return await this.lojaRepository.findOne({ where: { id } });
@@ -38,7 +38,7 @@ export class LojaService {
     const storeSaved = this.lojaRepository.save(loja);
 
     if (storeSaved) {
-      throw SucessMessages.STORE_CREATED_SUCCESS(loja.descricao);
+      throw this.MESSAGES.STORE_CREATED_SUCCESS(loja.descricao);
     }
 
     return storeSaved;
@@ -50,7 +50,7 @@ export class LojaService {
     const findStore = await this.lojaRepository.findOne({ where: { id } });
 
     if (!findStore) {
-      throw ExceptionsMessages.STORE_NOT_FOUND(id);
+      throw this.MESSAGES.STORE_NOT_FOUND(id);
     }
 
     const { descricao } = loja;
@@ -58,11 +58,11 @@ export class LojaService {
 
     await this.lojaRepository.save(findStore);
 
-    const successMessages = SucessMessages.STORE_UPDATED_SUCCESS(descricao);
+    const MESSAGES = this.MESSAGES.STORE_UPDATED_SUCCESS(descricao);
 
     return {
-      status: successMessages.getStatus(),
-      message: successMessages.message,
+      status: MESSAGES.getStatus(),
+      message: MESSAGES.message,
     };
   }
 
@@ -72,7 +72,7 @@ export class LojaService {
     const findStore = await this.lojaRepository.findOne({ where: { id } });
 
     if (!findStore) {
-      throw ExceptionsMessages.STORE_NOT_FOUND(id);
+      throw this.MESSAGES.STORE_NOT_FOUND(id);
     }
 
     const productStoreDependencies = await this.produtoLojaRepository.find({ where: { id: id } });
@@ -81,11 +81,11 @@ export class LojaService {
 
     await this.lojaRepository.delete(id);
 
-    const successMessages = SucessMessages.STORE_DELETED_SUCCESS(id);
+    const MESSAGES = this.MESSAGES.STORE_DELETED_SUCCESS(id);
 
     return {
-      status: successMessages.getStatus(),
-      message: successMessages.message,
+      status: MESSAGES.getStatus(),
+      message: MESSAGES.message,
     };
   }
 }

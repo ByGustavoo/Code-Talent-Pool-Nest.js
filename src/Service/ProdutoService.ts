@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ExceptionsMessages } from 'src/messages/exceptions/ExceptionsMessages';
-import { SucessMessages } from 'src/messages/success/SuccessMessages';
+import { Messages } from 'src/messages/messages';
 import { ProdutoDTO } from 'src/model/dto/ProdutoDTO';
 import { Produto } from 'src/model/entities/Produto';
 import { ProdutoLoja } from 'src/model/entities/ProdutoLoja';
@@ -12,6 +11,7 @@ export class ProdutoService {
   constructor(
     @InjectRepository(Produto) private produtoRepository: Repository<Produto>,
     @InjectRepository(ProdutoLoja) private produtoLojaRepository: Repository<ProdutoLoja>,
+    private readonly MESSAGES: Messages
   ) {}
 
 
@@ -20,7 +20,7 @@ export class ProdutoService {
     const findProduct = await this.produtoRepository.findOne({ where: { id } });
 
     if (!findProduct) {
-      throw ExceptionsMessages.PRODUCT_NOT_FOUND(id);
+      throw this.MESSAGES.PRODUCT_NOT_FOUND(id);
     }
 
     return await this.produtoRepository.findOne({ where: { id } });
@@ -38,7 +38,7 @@ export class ProdutoService {
     const productSaved = this.produtoRepository.save(produto);
 
     if (productSaved) {
-      throw SucessMessages.PRODUCT_CREATED_SUCCESS(produto.descricao);
+      throw this.MESSAGES.PRODUCT_CREATED_SUCCESS(produto.descricao);
     }
 
     return productSaved;
@@ -50,7 +50,7 @@ export class ProdutoService {
     const findProduct = await this.produtoRepository.findOne({ where: { id } });
 
     if (!findProduct) {
-      throw ExceptionsMessages.PRODUCT_NOT_FOUND(id);
+      throw this.MESSAGES.PRODUCT_NOT_FOUND(id);
     }
 
     const { descricao, custo, imagem } = produto;
@@ -60,11 +60,11 @@ export class ProdutoService {
 
     await this.produtoRepository.save(findProduct);
 
-    const successMessages = SucessMessages.PRODUCT_UPDATED_SUCCESS(descricao);
+    const MESSAGES = this.MESSAGES.PRODUCT_UPDATED_SUCCESS(descricao);
 
     return {
-      status: successMessages.getStatus(),
-      message: successMessages.message
+      status: MESSAGES.getStatus(),
+      message: MESSAGES.message
     };
   }
 
@@ -74,7 +74,7 @@ export class ProdutoService {
     const findProduct = await this.produtoRepository.findOne({ where: { id } });
 
     if (!findProduct) {
-      throw ExceptionsMessages.PRODUCT_NOT_FOUND(id);
+      throw this.MESSAGES.PRODUCT_NOT_FOUND(id);
     }
 
     const productStoreDependencies = await this.produtoLojaRepository.find({ where: { id: id }});
@@ -83,11 +83,11 @@ export class ProdutoService {
 
     await this.produtoRepository.delete(id);
 
-    const successMessages = SucessMessages.PRODUCT_DELETED_SUCCESS(id);
+    const MESSAGES = this.MESSAGES.PRODUCT_DELETED_SUCCESS(id);
 
     return {
-      status: successMessages.getStatus(),
-      message: successMessages.message
+      status: MESSAGES.getStatus(),
+      message: MESSAGES.message
     };
   }
 }
