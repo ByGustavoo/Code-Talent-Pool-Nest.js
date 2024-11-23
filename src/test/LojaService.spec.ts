@@ -49,6 +49,7 @@ describe('LojaService', () => {
     it('Deve retornar uma Loja quando ela for encontrada.', async () => {
       const id = 1;
       const mockLoja = { id, descricao: 'Loja Teste' };
+
       lojaRepository.findOne.mockResolvedValue(mockLoja);
 
       const result = await service.findOne(id);
@@ -71,6 +72,7 @@ describe('LojaService', () => {
       const id = 1;
       const mockLoja = { id, descricao: 'Loja Antiga' };
       const mockLojaDTO = { id, descricao: 'Loja Atualizada' };
+
       lojaRepository.findOne.mockResolvedValue(mockLoja);
 
       const result = await service.updateStore(id, mockLojaDTO);
@@ -88,6 +90,7 @@ describe('LojaService', () => {
     it('Deve lançar uma exceção quando a Loja não for encontrada.', async () => {
       const id = 1;
       const mockLojaDTO = { id, descricao: 'Loja Atualizada' };
+      
       lojaRepository.findOne.mockResolvedValue(null);
 
       const message = messages.STORE_NOT_FOUND(id);

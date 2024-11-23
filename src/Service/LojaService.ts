@@ -14,7 +14,6 @@ export class LojaService {
     private readonly MESSAGES: Messages,
   ) {}
 
-
   // Busca uma Loja pelo ID
   async findOne(id: number): Promise<LojaDTO> {
     const findStore = await this.lojaRepository.findOne({ where: { id } });
@@ -26,12 +25,10 @@ export class LojaService {
     return await this.lojaRepository.findOne({ where: { id } });
   }
 
-
   // Busca todas as Lojas
   async findAll(): Promise<LojaDTO[]> {
     return await this.lojaRepository.find();
   }
-
 
   // Cria uma Loja
   async createStore(loja: LojaDTO): Promise<LojaDTO> {
@@ -43,7 +40,6 @@ export class LojaService {
 
     return storeSaved;
   }
-
 
   // Atualiza uma Loja
   async updateStore(id: number, loja: LojaDTO) {
@@ -65,7 +61,6 @@ export class LojaService {
       message: message.message,
     };
 }
-
 
   // Deleta uma Loja
   async deleteStore(id: number) {
