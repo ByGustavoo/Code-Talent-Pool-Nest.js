@@ -4,7 +4,7 @@ import { LojaDTO } from 'src/model/dto/LojaDTO';
 import { Loja } from '../model/entities/Loja';
 import { ProdutoLoja } from '../model/entities/ProdutoLoja';
 import { Repository } from 'typeorm';
-import { Messages } from 'src/messages/messages';
+import { Messages } from '../messages/Messages';
 
 @Injectable()
 export class LojaService {
@@ -58,13 +58,13 @@ export class LojaService {
 
     await this.lojaRepository.save(findStore);
 
-    const MESSAGES = this.MESSAGES.STORE_UPDATED_SUCCESS(descricao);
+    const message = this.MESSAGES.STORE_UPDATED_SUCCESS(descricao);
 
     return {
-      status: MESSAGES.getStatus(),
-      message: MESSAGES.message,
+      status: message.getStatus(),
+      message: message.message,
     };
-  }
+}
 
 
   // Deleta uma Loja

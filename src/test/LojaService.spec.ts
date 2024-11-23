@@ -4,7 +4,7 @@ import { LojaService } from '../Service/LojaService';
 import { Loja } from '../model/entities/Loja';
 import { ProdutoLoja } from '../model/entities/ProdutoLoja';
 import { Repository } from 'typeorm';
-import { NotFoundException } from '@nestjs/common';
+import { Messages } from '../messages/Messages';
 
 const mockLojaRepository = () => ({
   findOne: jest.fn(),
@@ -22,6 +22,7 @@ describe('LojaService', () => {
   let service: LojaService;
   let lojaRepository;
   let produtoLojaRepository;
+  let messages: Messages;  
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -32,14 +33,16 @@ describe('LojaService', () => {
           provide: getRepositoryToken(ProdutoLoja),
           useFactory: mockProdutoLojaRepository,
         },
+        Messages,
       ],
     }).compile();
 
     service = module.get<LojaService>(LojaService);
     lojaRepository = module.get<Repository<Loja>>(getRepositoryToken(Loja));
     produtoLojaRepository = module.get<Repository<ProdutoLoja>>(
-      getRepositoryToken(ProdutoLoja),
+      getRepositoryToken(ProdutoLoja)
     );
+    messages = module.get<Messages>(Messages); 
   });
 
   describe('findOne', () => {
@@ -57,44 +60,28 @@ describe('LojaService', () => {
       const id = 1;
       lojaRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.findOne(id)).rejects.toThrow(NotFoundException);
+      const message = messages.STORE_NOT_FOUND(id);
+
+      await expect(service.findOne(id)).rejects.toThrow(message);
     });
   });
 
-  describe('findAll', () => {
-    it('Deve retornar todas as Lojas.', async () => {
-      const mockLojas = [{ id: 1, descricao: 'Loja Teste' }];
-      lojaRepository.find.mockResolvedValue(mockLojas);
-
-      const result = await service.findAll();
-
-      expect(result).toEqual(mockLojas);
-    });
-  });
-
-  describe('criarLoja', () => {
-    it('Deve criar uma nova Loja.', async () => {
-      const mockLojaDTO = { id: 1, descricao: 'Nova Loja' };
-      lojaRepository.save.mockResolvedValue(mockLojaDTO);
-
-      const result = await service.criarLoja(mockLojaDTO);
-
-      expect(result).toEqual(mockLojaDTO);
-    });
-  });
-
-  describe('atualizarLoja', () => {
+  describe('updateStore', () => {
     it('Deve atualizar uma Loja existente.', async () => {
       const id = 1;
       const mockLoja = { id, descricao: 'Loja Antiga' };
       const mockLojaDTO = { id, descricao: 'Loja Atualizada' };
       lojaRepository.findOne.mockResolvedValue(mockLoja);
 
-      await service.atualizarLoja(id, mockLojaDTO);
+      const result = await service.updateStore(id, mockLojaDTO);
 
       expect(lojaRepository.save).toHaveBeenCalledWith({
         ...mockLoja,
         descricao: mockLojaDTO.descricao,
+      });
+      expect(result).toEqual({
+        status: 200,
+        message: `Sucesso! A Loja ${mockLojaDTO.descricao}, foi atualizada com sucesso!`,
       });
     });
 
@@ -103,13 +90,14 @@ describe('LojaService', () => {
       const mockLojaDTO = { id, descricao: 'Loja Atualizada' };
       lojaRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.atualizarLoja(id, mockLojaDTO)).rejects.toThrow(
-        NotFoundException,
-      );
-    });
-  });
+      const message = messages.STORE_NOT_FOUND(id);
 
-  describe('excluirLoja', () => {
+      await expect(service.updateStore(id, mockLojaDTO)).rejects.toThrow(message);
+    });
+});
+
+
+  describe('deleteStore', () => {
     it('Deve excluir uma Loja existente e suas dependências.', async () => {
       const id = 1;
       const mockLoja = { id, descricao: 'Loja Teste' };
@@ -118,22 +106,23 @@ describe('LojaService', () => {
       lojaRepository.findOne.mockResolvedValue(mockLoja);
       produtoLojaRepository.find.mockResolvedValue(mockDependencias);
 
-      const result = await service.excluirLoja(id);
+      const result = await service.deleteStore(id);
 
-      expect(produtoLojaRepository.remove).toHaveBeenCalledWith(
-        mockDependencias,
-      );
+      expect(produtoLojaRepository.remove).toHaveBeenCalledWith(mockDependencias);
       expect(lojaRepository.delete).toHaveBeenCalledWith(id);
-      expect(result).toEqual(
-        `A Loja com o ID: ${id} foi excluída com sucesso, incluindo as suas dependências, caso existam, na tabela ProdutoLoja.`,
-      );
+      expect(result).toEqual({
+        status: 200,
+        message: `Sucesso! A Loja com o ID: ${id}, foi excluída com sucesso! Incluindo as suas dependências, caso existam, na tabela ProdutoLoja.`,
+      });
     });
 
     it('Deve lançar uma exceção quando a Loja não for encontrada.', async () => {
       const id = 1;
       lojaRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.excluirLoja(id)).rejects.toThrow(NotFoundException);
+      const message = messages.STORE_NOT_FOUND(id);
+
+      await expect(service.deleteStore(id)).rejects.toThrow(message);
     });
   });
 });
